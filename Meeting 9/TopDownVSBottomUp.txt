@@ -1,0 +1,103 @@
+Bottom-Up vs. Top-Down Dynamic Programming
+==========================================
+
+Dynamic Programming (DP) is a technique used to solve problems by breaking them down into smaller subproblems and storing the results to avoid redundant work.
+
+There are two main approaches to implement DP: **Top-Down (with memoization)** and **Bottom-Up (with tabulation)**.
+
+--------------------------------------------------
+1. Top-Down DP (Recursive with Memoization)
+--------------------------------------------------
+
+Concept:
+- Start from the main problem and break it down into smaller subproblems using recursion.
+- Store the results of subproblems in a memoization table (usually a dictionary or array) to avoid solving them more than once.
+
+How it works:
+- You define a recursive function to solve the problem.
+- Before computing the result of a subproblem, you check if it has already been solved and stored.
+- If it’s already computed, return the stored result.
+- If not, compute it recursively and store the result.
+
+Example structure:
+
+memo = {}
+def solve(n):
+if n in memo:
+return memo[n]
+if base_case:
+return base_value
+memo[n] = combine(solve(n-1), solve(n-2))
+return memo[n]
+
+Advantages:
+- Often easier and more intuitive to implement, especially for problems that are naturally recursive.
+- Only computes the subproblems needed to solve the main problem.
+
+Disadvantages:
+- Uses recursion, which can lead to stack overflow for deep recursion.
+- Harder to optimize space usage.
+
+--------------------------------------------------
+2. Bottom-Up DP (Iterative with Tabulation)
+--------------------------------------------------
+
+Concept:
+- Start from the smallest subproblems (base cases) and iteratively build up solutions to larger problems.
+- Use an array or table to store the results of subproblems in increasing order of size.
+
+How it works:
+- Identify the base cases and initialize them.
+- Use a loop to fill out a table where each entry depends on previously computed entries.
+- Final answer is found at the last index or position in the table.
+
+Example structure:
+
+dp = [0] * (n + 1)
+dp[0] = base_0
+dp[1] = base_1
+for i in range(2, n+1):
+dp[i] = combine(dp[i-1], dp[i-2])
+return dp[n]
+
+Advantages:
+- No recursion → avoids call stack overflow.
+- Easier to optimize for space by storing only the most recent results instead of the full table.
+
+Disadvantages:
+- Must compute *all* subproblems up to the target, even if not all are necessary.
+- Slightly more effort to set up when compared to a straightforward recursive approach.
+
+--------------------------------------------------
+Key Differences at a Glance
+--------------------------------------------------
+
+| Feature               | Top-Down (Memoization)         | Bottom-Up (Tabulation)         |
+|-----------------------|--------------------------------|---------------------------------|
+| Approach              | Recursive                      | Iterative                      |
+| Execution flow        | Start from the main problem    | Start from base cases          |
+| Memory usage          | Memo table + call stack        | DP table or a few variables    |
+| Stack usage           | Yes (can overflow)             | No                             |
+| Speed (in practice)   | Slightly slower due to recursion| Often faster                   |
+| Best for              | Naturally recursive problems   | Space/time optimized solutions |
+
+--------------------------------------------------
+Which Should You Use?
+--------------------------------------------------
+
+- Use **Top-Down** when:
+  - The problem is naturally recursive.
+  - You want to implement it quickly and readability is a priority.
+  - You only need to solve part of the subproblem space.
+
+- Use **Bottom-Up** when:
+  - You want better space/time performance.
+  - You want to avoid recursion depth issues.
+  - You need to optimize further, such as reducing space complexity to O(1).
+
+--------------------------------------------------
+Summary
+--------------------------------------------------
+
+Both Top-Down and Bottom-Up DP solve the same class of problems, but in different ways. Top-Down uses recursion and memoization to avoid recomputation, 
+while Bottom-Up builds the solution iteratively from the ground up. Understanding both gives you flexibility in choosing the best approach for a given problem.
